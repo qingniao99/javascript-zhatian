@@ -2,7 +2,7 @@
 bin/
 bin-debug/
 bin-release/
-
+.idea/
 # Other files and folders
 .settings/
 
