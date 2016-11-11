@@ -87,7 +87,81 @@ numbers.forEach(function(a){
     console.log(a);
 });
 JavaScript还有两个会返回新数组的遍历方法。map和filter：
+调用map遍历结束后，会返回由调用函数return结果组成的新数组
+var a=[8,9,10];
+var s = a.map(function(x){
+    return x-1;
+});
+s的值是[7,8,9];
+filter方法。它返回的新数组由使函数返回true的元素组成：
+var a=[8,9,10];
+var s = a.filter(function(x){
+    return (x%2==0);
+});
+s的值是[8,10];
+reduce方法接收一个函数作为参数，这个函数有四个参数：previousValue、currentValue、index和array。这个函数会返回一个将被叠加到累加器的值，reduce方法停止执行后会返回这个累加器。
+var a=[8,"9",10];
+var s = a.reduce(function(previous, current, index){console.log(previous+":"+current)
+    return previous+current;
+});
+8:9
+89:10
+s的值是27
+```
+## 搜索和排序
+```javascript
+reverse()方法可以将数组反序。
+var a=[1,2,3]
+a.reverse();//[3,2,1]
+sort()方法可以将数组排序。sort方法在对数组做排序时，把元素默认成字符串进行相互比较。
+var a=[1,2,3,14,15,22]
+a.sort();//[1, 14, 15, 2, 22, 3]
+sort()方法可以接受一个比较函数作为参数。
+function compare(a, b) {
+    if (a < b) {
+        return -1;//a比b小
+    }
+    if (a > b) {
+        return 1;//a比b大
+    }
+    return 0;
+}
+a.sort(compare);//[1, 2, 3, 14, 15, 22]
 
+var friends = [
+    {name: 'John', age: 30},
+    {name: 'Ana', age: 20},
+    {name: 'Chris', age: 25}
+];
+
+function comparePerson(a, b){
+    if (a.age < b.age){
+        return -1
+    }
+    if (a.age > b.age){
+        return 1
+    }
+    return 0;
+}
+
+console.log(friends.sort(comparePerson));
+//Ana(20), Chris(25), John(30);
+var names =['Ana', 'ana', 'john', 'John'];
+console.log(names.sort());
+//["Ana", "John", "ana", "john"]
+JavaScript在做字符比较的时候，是根据字符对应的ASCII值来比较的。例如，A、J、a、j对应的ASCII值分别是65、75、97、106。
+虽然在字母表里a是最靠前的，但J的ASCII值比a的小，所以排在a前面。
+
+假如对带有重音符号的字符做排序的话，我们可以用localCompare来实现：
+var names2 = ['Maève', 'Maeve'];
+console.log(names2.sort(function(a, b){
+    return a.localeCompare(b);
+}));
+//["Maeve", "Maève"]
+
+搜索有两个方法：indexOf方法返回与参数匹配的第一个元素的索引，lastIndexOf返回与参数匹配的最后一个元素的索引。不存在的时候会返回-1.
+
+join()方法接受一个符号，默认为“，”会将数组拼接成字符串。
 ```
 
 
