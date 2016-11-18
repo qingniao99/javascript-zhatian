@@ -82,7 +82,6 @@ every方法会迭代数组中的每个元素，直到返回false
 numbers.every(func);
 numbers.some(func);
 如果要迭代整个数组，可以用forEach方法。它和使用for循环的结果相同
-JavaScript还有两个会返回新数组的遍历方法。第一个是map：
 numbers.forEach(function(a){
     console.log(a);
 });
