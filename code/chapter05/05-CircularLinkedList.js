@@ -1,10 +1,4 @@
-# 链表
-要存储多个元素，数组（或列表）可能是最常用的数据结构。这种数据结构非常方便，提供了一个便利的[]语法来访问它的元素。然而，这种数据结构有一个缺点：（在大多数语言中）数组的大小是固定的，从数组的起点或中间插入或移除项的成本很高，因为需要移动元素（尽管我们已经学过的JavaScript的Array类方法可以帮我们做这些事，但背后的情况同样是这样）。
-链表存储有序的元素集合，但不同于数组，链表中的元素在内存中并不是连续放置的。每个元素由一个存储元素本身的节点和一个指向下一个元素的引用（也称指针或链接）组成。
-数组的另一个细节是可以直接访问任何位置的任何元素，而要想访问链表中间的一个元素，需要从起点（表头）开始迭代列表直到找到所需的元素。
-
-```javascript
-function LinkedList() {
+function CircularLinkedList() {
 
     var Node = function(element){
 
@@ -27,13 +21,16 @@ function LinkedList() {
             current = head;
 
             //loop the list until find last item
-            while(current.next){
+            while(current.next !== head){ //last element will be head instead of NULL
                 current = current.next;
             }
 
             //get last item and assign next to added item to make the link
             current.next = node;
         }
+
+        //set node.next to head - to have circular list
+        node.next = head;
 
         length++; //update size of list
     };
@@ -51,7 +48,14 @@ function LinkedList() {
             if (position === 0){ //add on first position
 
                 node.next = current;
+
+                //update last element
+                while(current.next !== head){ //last element will be head instead of NULL
+                    current = current.next;
+                }
+
                 head = node;
+                current.next = head;
 
             } else {
                 while (index++ < position){
@@ -60,6 +64,10 @@ function LinkedList() {
                 }
                 node.next = current;
                 previous.next = node;
+
+                if (node.next === null){ //update in case last element
+                    node.next = head;
+                }
             }
 
             length++; //update size of list
@@ -82,8 +90,15 @@ function LinkedList() {
 
             //removing first item
             if (position === 0){
-                head = current.next;
-            } else {
+
+                while(current.next !== head){ //needs to update last element first
+                    current = current.next;
+                }
+
+                head = head.next;
+                current.next = head;
+
+            } else { //no need to update last element for circular list
 
                 while (index++ < position){
 
@@ -113,14 +128,29 @@ function LinkedList() {
     this.indexOf = function(element){
 
         var current = head,
-            index = 0;
+            index = -1;
 
-        while (current) {
-            if (element === current.element) {
+        //check first item
+        if (element == current.element){
+            return 0;
+        }
+
+        index++;
+
+        //check in the middle of the list
+        while(current.next !== head){
+
+            if (element == current.element){
                 return index;
             }
-            index++;
+
             current = current.next;
+            index++;
+        }
+
+        //check last item
+        if (element == current.element){
+            return index;
         }
 
         return -1;
@@ -141,22 +171,17 @@ function LinkedList() {
     this.toString = function(){
 
         var current = head,
-            string = '';
+            s = current.element;
 
-        while (current) {
-            string = current.element;
+        while(current.next !== head){
             current = current.next;
+            s += ', ' + current.element;
         }
-        return string;
 
+        return s.toString();
     };
 
     this.print = function(){
         console.log(this.toString());
     };
 }
-```
-# 双向链表
-双向链表和普通链表的区别在于，在链表中，一个节点只有链向下一个节点的链接，而在双向链表中，链接是双向的：一个链向下一个元素，另一个链向前一个元素。
-# 循环链表
-循环链表可以像链表一样只有单向引用，也可以像双向链表一样有双向引用。循环链表和链表之间唯一的区别在于，最后一个元素指向下一个元素的指针（tail.next）不是引用null，而是指向第一个元素（head）。
